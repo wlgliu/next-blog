@@ -4,11 +4,21 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Link from 'next/link'
 import Layout from '@/components/layout'
-import utilLayout  from '../styles/utils.module.css'
+import utilStyles  from '../styles/utils.module.css'
+import { getSortedPostsData } from '@/lib/posts'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData()
+  return {
+    props: {
+      allPostsData
+    }
+  }
+}
+
+export default function Home({allPostsData}: any) {
   return (
     <Layout home>
       <Head>
@@ -17,12 +27,26 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className={utilLayout.headingMd}>
+      <section className={utilStyles.headingMd}>
         <p>[Your Self Introduction]</p>
         <p>
           (This is a sample website - you’ll be building a site like this on{' '}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
+
+        <ul className={utilStyles.list}>
+          {
+            allPostsData.map(({id, date, title}: any) => (
+              <li className={utilStyles.listItem} key={id}>
+                { title }
+                <br />
+                {id}
+                <br />
+                { date }
+              </li>
+            ))
+          }
+        </ul>
       </section>
     </Layout>
   )
