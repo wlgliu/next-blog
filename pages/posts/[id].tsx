@@ -5,7 +5,7 @@ import Head from "next/head"
 import utilStyles from '@/styles/utils.module.css'
 
 const Post = ({ postData } : any) => {
-    return <Layout>
+    return <Layout home={false}>
         <Head>
             <title>{ postData.title }</title>
         </Head>
